@@ -58,5 +58,58 @@
     <footer>
         <p>&copy; 2026 Lechang Huang. All rights reserved.</p>
     </footer>    
+
+<dialog class="project-dialog" aria-labelledby="project-dialog-title">
+        <div class="project-dialog-content">
+            <button class="project-dialog-close" type="button" aria-label="Close project details">&times;</button>
+            <div class="project-dialog-image-wrap">
+                <img class="project-dialog-image" src="" alt="">
+            </div>
+            <section class="project-dialog-info">
+                <h2 id="project-dialog-title"></h2>
+                <p class="project-dialog-description"></p>
+            </section>
+        </div>
+    </dialog>
+    <script>
+        const projectDescriptions = {"Abstract Letterforms": "A typographic exploration that turns letterforms into expressive shapes, pairing an oversized form with writing about movement and reflection.", "Calendar": "A calendar design built around bold contrast, compact month layouts, and a green-and-black color palette.", "Editorial Spread": "A two-page editorial layout combining typography, photography, and a clear reading structure.", "Logo B&W": "A set of monochrome logo explorations focused on simple shapes and strong contrast.", "Logo Color": "A color study of the logo concepts, using green tones to create a softer visual identity.", "Package": "A packaging design study focused on visual identity, layout, and presentation."};
+        const projectDialog = document.querySelector('.project-dialog');
+        const dialogImage = projectDialog.querySelector('.project-dialog-image');
+        const dialogTitle = projectDialog.querySelector('#project-dialog-title');
+        const dialogDescription = projectDialog.querySelector('.project-dialog-description');
+
+        document.querySelectorAll('.IMG-box .card img').forEach((image) => {
+            const card = image.closest('.card');
+            const caption = card.querySelector('.name');
+            const title = caption ? caption.textContent.trim() : image.alt;
+            image.tabIndex = 0;
+            image.setAttribute('role', 'button');
+            image.setAttribute('aria-label', `View ${title} details`);
+
+            const openDetails = () => {
+                dialogImage.src = image.currentSrc || image.src;
+                dialogImage.alt = image.alt || title;
+                dialogTitle.textContent = title;
+                dialogDescription.textContent = projectDescriptions[title] || 'View this project from the portfolio.';
+                projectDialog.showModal();
+            };
+
+            image.addEventListener('click', openDetails);
+            image.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    openDetails();
+                }
+            });
+        });
+
+        projectDialog.querySelector('.project-dialog-close').addEventListener('click', () => projectDialog.close());
+        projectDialog.addEventListener('click', (event) => {
+            if (event.target === projectDialog) projectDialog.close();
+        });
+    </script>
+
+
+
 </body>
 </html>
